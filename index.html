@@ -1,161 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Prototipo de gestión de expedientes — Bufete Popular · AI Code Wars UMG 2026" />
-  <meta name="theme-color" content="#0c1b2e" />
-  <title>Gestión de Expedientes · Bufete Popular</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="app.js" defer></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1730"><meta name="description" content="Prototipo académico de gestión de expedientes ficticios">
+<title>LexTrack | Gestión de expedientes</title>
+<link rel="stylesheet" href="styles.css"><script src="app.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Saltar al contenido</a>
+<div class="app">
+<aside class="sidebar" aria-label="Navegación">
+  <div class="brand"><span class="brand-mark">L<span class="brand-dot">.</span></span><div><strong>LexTrack</strong><small>CASE MANAGEMENT</small></div></div>
+  <div class="nav-label">ESPACIO DE TRABAJO</div>
+  <a class="nav-link selected" href="#inicio"><span>▦</span> Panel de control</a>
+  <a class="nav-link" href="#expedientes"><span>▤</span> Expedientes</a>
+  <a class="nav-link" href="#nuevo"><span>＋</span> Nuevo expediente</a>
+  <div class="side-bottom"><span class="online-dot"></span> Prototipo local<br><small>Información ficticia · Sin asesoría legal</small></div>
+</aside>
+<div class="workspace">
+<header class="topbar"><div class="breadcrumb">Plataforma <span>/</span> <strong>Expedientes</strong></div><div class="top-right"><span class="environment">● Entorno de demostración</span><span class="avatar">UMG</span></div></header>
+<main id="inicio" class="content section-panel active">
+ <div class="page-heading"><div><div class="eyebrow">AI CODE WARS · UMG 2026</div><h1>Gestión de expedientes</h1><p>Control, seguimiento e historial de casos en un solo lugar.</p></div><a href="#nuevo" class="btn btn-primary">＋ Nuevo expediente</a></div>
+ <section class="metrics" aria-label="Indicadores"><article class="metric"><div class="metric-top"><span>Total de expedientes</span><span class="metric-symbol">▤</span></div><strong id="stat-total">0</strong><small>Expedientes registrados</small></article><article class="metric"><div class="metric-top"><span>Abiertos</span><span class="metric-symbol blue">◉</span></div><strong id="stat-open">0</strong><small>Pendientes de seguimiento</small></article><article class="metric"><div class="metric-top"><span>En seguimiento</span><span class="metric-symbol amber">◷</span></div><strong id="stat-follow">0</strong><small>En gestión activa</small></article><article class="metric"><div class="metric-top"><span>Cerrados</span><span class="metric-symbol green">✓</span></div><strong id="stat-closed">0</strong><small>Gestión finalizada</small></article></section>
+ <section class="metrics-summary" aria-label="Resumen del panel"><div class="mini-card"><span>Casos activos</span><strong id="mini-active">0</strong></div><div class="mini-card"><span>Seguimiento</span><strong id="mini-follow">0</strong></div><div class="mini-card"><span>Cierre</span><strong id="mini-closed">0</strong></div></section>
+</main>
+<div class="section-panel" id="expedientes" hidden>
+ <div class="main-grid">
+  <section class="panel cases-panel"><div class="panel-head"><div><h2>Expedientes</h2><p>Consulta y seguimiento de los casos</p></div><span class="count" id="counter">0</span></div>
+  <div class="filters"><label class="search-wrap"><span class="sr-only">Buscar expediente</span><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar por ID o alias..." autocomplete="off"></label><label class="sr-only" for="status-filter">Filtrar por estado</label><select id="status-filter"><option value="">Todos los estados</option><option>Abierto</option><option>En seguimiento</option><option>Cerrado</option></select></div>
+  <div class="list-head"><span>CASO / RESPONSABLE</span><span>ESTADO</span></div><div id="cases" class="case-list"></div>
+  <div class="panel-bottom"><span>Datos almacenados en este navegador</span><button id="export-btn" class="text-button" type="button">↓ Exportar JSON</button></div></section>
+  <section class="panel detail-panel"><div id="details"><div class="empty"><span class="empty-icon">▤</span><h3>Seleccione un expediente</h3><p>Abra un caso para consultar sus datos y movimientos.</p></div></div></section>
+ </div>
+</div>
+<section class="panel create-panel section-panel" id="nuevo" hidden>
+ <div class="panel-head"><div><h2>Apertura de expediente</h2><p>Complete los datos para registrar un nuevo caso ficticio</p></div><span class="badge-soft">Registro</span></div>
+ <form id="case-form" novalidate><div class="form-grid"><div class="field"><label for="person">Persona solicitante o alias <span>*</span></label><input id="person" maxlength="100" placeholder="Ej. Caso Aurora" required><small>Utilice únicamente nombres ficticios.</small></div><div class="field"><label for="responsible">Responsable <span>*</span></label><input id="responsible" maxlength="100" placeholder="Ej. Equipo jurídico A" required></div><div class="field wide"><label for="description">Descripción breve del asunto <span>*</span></label><textarea id="description" rows="3" maxlength="500" placeholder="Describa el asunto en términos generales..." required></textarea></div><div class="field"><label for="category">Categoría (opcional)</label><select id="category"><option value="">Sin categoría</option><option>Civil</option><option>Familiar</option><option>Laboral</option></select></div></div><div id="form-message" class="form-message" role="status" aria-live="polite"></div><div class="form-actions"><span>* Campos obligatorios</span><button class="btn btn-primary" type="submit">＋ Crear expediente</button></div></form>
+</section>
+<footer>LexTrack · Solución académica AI CODE WARS 2026 <span>Sin datos personales reales · Sin asesoría jurídica</span></footer>
 
-  <header class="header" role="banner">
-    <div class="container header-inner">
-      <div class="brand">
-        <span class="brand-label">AI CODE WARS · PROTOTIPO ACADÉMICO</span>
-        <h1>Gestión de Expedientes</h1>
-        <p class="brand-sub">Bufete Popular · Datos exclusivamente ficticios</p>
-      </div>
-      <div class="header-meta">
-        <span class="pill" title="Los datos se conservan en este navegador">
-          <span class="pill-dot" aria-hidden="true"></span>
-          Almacenamiento local
-        </span>
-      </div>
-    </div>
-  </header>
-
-  <main id="main" class="container layout" role="main">
-    <!-- Panel: Apertura de expediente -->
-    <section class="panel panel-form" aria-labelledby="form-title">
-      <header class="panel-head">
-        <h2 id="form-title">Abrir expediente</h2>
-        <p class="hint">Los campos marcados con <span class="req" aria-hidden="true">*</span> son obligatorios.</p>
-      </header>
-
-      <form id="case-form" novalidate autocomplete="off">
-        <div class="field">
-          <label for="person">
-            Persona solicitante o alias
-            <span class="req">*</span>
-          </label>
-          <input
-            id="person"
-            name="person"
-            type="text"
-            maxlength="100"
-            placeholder="Ej.: Caso Aurora"
-            required
-            aria-required="true"
-          />
-        </div>
-
-        <div class="field">
-          <label for="description">
-            Descripción breve del asunto
-            <span class="req">*</span>
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            rows="3"
-            maxlength="500"
-            placeholder="Describa el asunto ficticio de forma concisa"
-            required
-            aria-required="true"
-          ></textarea>
-        </div>
-
-        <div class="field">
-          <label for="responsible">
-            Nombre del responsable
-            <span class="req">*</span>
-          </label>
-          <input
-            id="responsible"
-            name="responsible"
-            type="text"
-            maxlength="100"
-            placeholder="Ej.: Equipo A"
-            required
-            aria-required="true"
-          />
-        </div>
-
-        <div class="field">
-          <label for="category">
-            Categoría
-            <span class="optional">(opcional)</span>
-          </label>
-          <select id="category" name="category">
-            <option value="">Sin categoría</option>
-            <option value="Civil">Civil</option>
-            <option value="Familiar">Familiar</option>
-            <option value="Laboral">Laboral</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block">
-          Crear expediente
-        </button>
-      </form>
-
-      <div id="form-message" class="message" role="status" aria-live="polite"></div>
-    </section>
-
-    <!-- Panel: Listado -->
-    <section class="panel panel-list" aria-labelledby="list-title">
-      <header class="panel-head panel-head-row">
-        <div>
-          <h2 id="list-title">Expedientes</h2>
-          <p class="hint">Seleccione uno para ver el detalle y el historial.</p>
-        </div>
-        <span id="counter" class="counter" aria-label="Total de expedientes">0</span>
-      </header>
-
-      <div class="field">
-        <label for="search">Buscar por identificador o alias</label>
-        <div class="search-wrap">
-          <input
-            id="search"
-            type="search"
-            placeholder="Ej.: EXP- o Caso Aurora"
-            autocomplete="off"
-            aria-describedby="search-hint"
-          />
-        </div>
-        <p id="search-hint" class="sr-only">Escriba para filtrar el listado en tiempo real.</p>
-      </div>
-
-      <div id="cases" class="case-list" role="list"></div>
-    </section>
-
-    <!-- Panel: Detalle -->
-    <section class="panel panel-detail" id="detail-panel" aria-labelledby="detail-heading">
-      <h2 id="detail-heading" class="sr-only">Detalle del expediente</h2>
-      <div id="details">
-        <div class="empty-state">
-          <div class="empty-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-            </svg>
-          </div>
-          <p>Seleccione un expediente del listado para consultar su detalle e historial.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <p>
-        Prototipo académico · No brinda asesoría jurídica ·
-        Los datos se guardan únicamente en este navegador.
-      </p>
-    </div>
-  </footer>
-</body>
-</html>
+</div></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body></html>
