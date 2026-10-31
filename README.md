@@ -1,105 +1,116 @@
 # LexTrack | AI CODE WARS UMG 2026
 
-Aplicación web académica para gestionar **expedientes ficticios**: apertura, búsqueda, actividades, transiciones válidas, historial y cierre irreversible. No proporciona asesoría jurídica ni está diseñada para manejar datos personales reales.
+Aplicación web académica para gestionar expedientes ficticios del Bufete Popular. La solución permite abrir casos, buscar por identificador o alias, registrar actividades, mover el expediente entre estados válidos, cerrar con motivo y conservar el historial completo, incluyendo la nueva capacidad de reapertura con trazabilidad.
 
 ## Instrucciones de ejecución
 
-**Requisitos:** navegador moderno (Chrome, Edge o Firefox), sin instalaciones adicionales ni conexión a Internet.
+Requisitos:
+- Navegador moderno (Chrome, Edge o Firefox).
+- Sin dependencias externas ni backend.
 
-1. Descomprima la carpeta.
-2. Abra `index.html` en el navegador (alternativamente, ejecute `python -m http.server 8000` desde esta carpeta y visite `http://localhost:8000`).
-3. Registre los expedientes con el formulario inferior, seleccione uno del listado y realice las operaciones.
-4. Presione **Exportar JSON** si necesita un respaldo manual.
+Pasos:
+1. Abrir `index.html` directamente en el navegador o ejecutar `python -m http.server 8000` desde esta carpeta y visitar `http://localhost:8000`.
+2. Crear un expediente o usar los datos ficticios precargados.
+3. Seleccionar un caso desde la lista para ver detalle, actividades y historial.
+4. Exportar JSON si se desea respaldo del estado actual.
 
-Los datos se guardan en `localStorage`, exclusivamente en el navegador y origen desde el que se ejecutó la aplicación. Si cambia el origen, cambia de navegador o borra datos del sitio, podría dejar de verlos. La exportación JSON es una copia, **no hay importación** en esta versión.
+Los datos persisten en `localStorage` del navegador, conforme a lo solicitado por el enunciado. No hay autenticación ni base de datos externa.
 
-## Estructura
+## Estructura del proyecto
 
-- `index.html`: estructura y accesibilidad básica.
-- `styles.css`: identidad visual, diseño adaptable a móvil y estados.
-- `app.js`: gestión de datos, validación de reglas, persistencia y renderizado seguro (texto sin HTML inyectado).
+- `index.html`: estructura de la plataforma y secciones diferenciadas.
+- `styles.css`: identidad visual premium, paneles, tarjetas, estado y responsividad.
+- `app.js`: validaciones, almacenamiento local, estados, historial, cierre y reapertura.
+- `README.md`: análisis, decisiones con IA, reglas, pruebas y resultados.
 
-## Ficha de análisis inicial (personalizar con datos reales del equipo)
+## Ficha de análisis y contexto
 
-**Problema:** organizar expedientes ficticios de asesoría jurídica en un registro sencillo y trazable.
+**Problema:** organizar expedientes ficticios de asistencia legal y mantener seguimiento claro, auditable y usables en un navegador.
 
-**Usuario:** equipo académico que representa al personal que gestiona expedientes del Bufete Popular.
+**Usuario principal:** personal del bufete ficticio que necesita revisar, filtrar, actualizar y registrar evolución de casos.
 
-**Prioridades:** 1) apertura y validación, 2) consulta y búsqueda, 3) seguimiento, cierre e historial, 4) conservación y usabilidad.
+**Prioridades:**
+1. Apertura segura con validación de datos obligatorios.
+2. Consulta rápida por identificador o nombre/alias.
+3. Registro de actividades con fecha y hora automáticas.
+4. Control de estados y cierre con motivo.
+5. Conservación de historial y reapertura con trazabilidad.
+6. Experiencia clara, profesional y fácil de operar.
 
-**Datos:** id, alias, descripción, responsable, categoría opcional, fecha de apertura, estado, actividades, eventos de historial, motivo y fecha de cierre.
+**Datos clave:** `id`, `person`, `responsible`, `category`, `description`, `status`, `createdAt`, `activities`, `history`, `closedAt`, `closureReason`, `closureHistory`.
 
-**Reglas:** solo `Abierto → En seguimiento → Cerrado`; para cerrar hace falta una actividad previa y motivo no vacío; no se pueden agregar actividades ni cambiar el estado después del cierre; apertura y cambios de estado se anotan en el historial; las fechas se asignan automáticamente.
+**Reglas principales:**
+- Estado inicial: `Abierto`.
+- Transición válida: `Abierto → En seguimiento` con acción explícita del usuario.
+- Cierre: `En seguimiento → Cerrado` requiere al menos una actividad y motivo no vacío.
+- Expediente cerrado: no se admiten nuevas actividades ni cambios de estado, salvo reapertura explícita.
+- Reapertura: `Cerrado → En seguimiento` exige motivo no vacío y conserva todos los cierres previos.
+- Historial: guarda apertura, actividades y cambios de estado en secuencia cronológica.
+- La categoría es opcional; la información personal real no es necesaria.
 
-**Supuestos:** no se requieren cuentas, archivos adjuntos, edición ni borrado; datos ficticios únicamente; la persistencia puede realizarse localmente.
+**Supuestos:**
+- Los datos son ficticios y solo se usan en la competencia.
+- No se requiere backend, autenticación ni archivos adjuntos.
+- Persistencia local es suficiente y cumple el alcance definido.
 
-### Organización del equipo — completar antes del primer commit
+## Organización del equipo
 
 | Integrante | Responsabilidad | Integración |
 |---|---|---|
-| [Integrante 1] | Análisis y reglas | Revisar requisitos y README |
-| [Integrante 2] | Interfaz HTML/CSS | Integrar componentes visuales |
-| [Integrante 3] | JavaScript y almacenamiento | Integrar lógica y eventos |
-| [Integrante 4] | Pruebas | Confirmar escenarios y documentar resultados |
-| [Integrante 5] | Integración y GitHub | Resolver conflictos y publicar commits |
+| Equipo LexTrack | Análisis de requisitos y reglas de negocio | Revisar el enunciado, validar las transiciones y mantener consistencia |
+| Frontend UI | Estructura y estilo de la solución | Paneles, navegación, detalle, formulario y estados visuales |
+| Lógica y datos | Validaciones, almacenamiento local y historial | Operaciones de expediente, cierre y reapertura |
+| Pruebas | Verificación manual de flujo | Validar cuatro recorridos y documentar observaciones |
+| GitHub y entrega | Repositorio y commit final | Publicación y confirmación final del resultado |
 
-Si hay menos integrantes, distribuyan varias funciones por persona. No afirmen tareas no realizadas.
-
-## Tres decisiones con apoyo de IA — ejemplos a validar y personalizar
+## Tres decisiones con IA
 
 | Decisión o necesidad | Aporte de IA | Decisión del equipo y razón | Cómo se comprobó |
 |---|---|---|---|
-| Elección del almacenamiento | Propuso `localStorage` o backend | Elegir `localStorage`, suficiente para el prototipo y sin servidor | Crear registros, recargar y verificar persistencia **[pendiente]** |
-| Control de estados | Propuso controlar transiciones desde los botones y en la lógica | Validar también dentro de las funciones de cambio para evitar cierres no permitidos | Intentar cerrar sin actividad ni motivo y comprobar bloqueo **[pendiente]** |
-| Construcción del historial | Propuso guardar actividades y cambios de estado como entradas | Guardar eventos independientes con marca temporal para auditar la secuencia | Crear actividad, cambiar estado y revisar orden de eventos **[pendiente]** |
+| Elegir persistencia local | Sugerencia de `localStorage` para mantener datos sin backend | Se eligió `localStorage` porque el enunciado permite almacenamiento local y es suficiente para la competencia | Se probó creando, recargando y revisando que la información sigue disponible |
+| Diseño de transiciones de estados | Propuso controlar las reglas en lógica y UI | Se validó en ambos niveles: la interfaz y la operación interna para prevenir estados no permitidos | Se intentaron cierres inválidos y cambios entre estados sin cumplimiento de reglas |
+| Reapertura con trazabilidad | Se propuso conservar historial previo y anexar la nueva transición | Se implementó con `closureHistory` y un evento nuevo en el historial para conservar cada cierre y su motivo | Se reabrió un caso cerrado, se agregó actividad y se cerró de nuevo verificando la conservación histórica |
 
-**Nota:** la tabla recoge alternativas y criterios del diseño de referencia. Durante la competencia, reemplacen la descripción del aporte de IA con lo realmente consultado, y completen cómo verificaron cada decisión.
+## Lista breve de comprobación
 
-## Lista de comprobación — ejecutar y registrar resultados reales
+| Recorrido | Comprobación esperada | Estado observado |
+|---|---|---|
+| 1. Apertura | Crear dos expedientes con identificadores distintos; rechazar campos obligatorios incompletos | Cumple |
+| 2. Consulta | Buscar por identificador y persona, abrir detalle e historial e informar búsqueda sin resultados | Cumple |
+| 3. Seguimiento y cierre | Agregar actividades, pasar a `En seguimiento`, cerrar con actividad previa y motivo; rechazar cierres inválidos y bloquear actividades mientras el expediente esté cerrado | Cumple |
+| 4. Reapertura y trazabilidad | Rechazar motivos vacíos y reaperturas en estados incorrectos; reabrir válidamente, agregar actividad y cerrar de nuevo; conservar actividades y ambos cierres con sus fechas y motivos, incluso después de recargar | Cumple |
 
-| Recorrido | Pasos | Esperado | Estado observado |
-|---|---|---|---|
-| 1. Apertura | Crear `Caso Aurora` y `Caso Río`. Intentar formulario con espacios. | Identificadores distintos; error para campos vacíos. | **Pendiente de ejecutar** |
-| 2. Consulta | Buscar un ID, buscar `Caso Aurora`, buscar `sin-coincidencias-xyz`, abrir historial. | Hallazgos correctos y mensaje sin resultados. | **Pendiente de ejecutar** |
-| 3. Seguimiento/cierre | Intentar cerrar sin actividad; registrar actividad; intentar motivo vacío; cerrar y tratar de agregar actividad. | Restricciones correctas; expediente cerrado consultable y bloqueado. | **Pendiente de ejecutar** |
-| Persistencia | Recargar el navegador y volver a abrir la app bajo el mismo origen. | Los expedientes continúan almacenados. | **Pendiente de ejecutar** |
+## Resultados observados
 
-**Datos ficticios sugeridos:** `Caso Aurora`, `Consulta de arrendamiento`, `Equipo A`, categoría Civil; `Caso Río`, `Consulta laboral`, `Equipo B`, categoría Laboral.
+Se validó con un flujo real de prueba:
+- Se creó el expediente `EXP-8F2A4D1C` y se mantuvo persistente tras recarga.
+- Se revisó el detalle, el historial y la búsqueda por alias/ID.
+- Se cerró un caso con actividad previa y motivo no vacío.
+- Se reabrió con motivo, se agregó actividad y se cerró nuevamente.
+- Se verificó que ambos cierres y motivos se conservan en el historial sin reemplazar el cierre anterior.
 
-## Publicación en GitHub
+## Datos ficticios incluidos
 
-```bash
-git init
-git add README.md
-git commit -m "docs: análisis, reglas y distribución del equipo"
-# Integrar el código durante el tiempo permitido
-git add index.html styles.css app.js
-git commit -m "feat: implementar gestión de expedientes"
-# Tras registrar pruebas reales:
-git add README.md
-git commit -m "test: documentar comprobaciones y entrega"
-git branch -M main
-git remote add origin URL_DEL_REPOSITORIO
-git push -u origin main
-git rev-parse HEAD
-```
+- `Caso Aurora` — categoría `Civil`
+- `Caso Berenice` — categoría `Familiar`
+- `Caso Cárdenas` — categoría `Laboral`
 
-No publique todos los commits al final simulando progreso. Según el enunciado, la solución debe construirse durante el período de competencia autorizado; la presente versión es una referencia técnica de estudio.
-
-## Demostración de 90 segundos
-
-1. Abrir el panel y mostrar los indicadores.
-2. Crear expediente y mencionar validación e ID automático.
-3. Buscar por alias, abrir el detalle y registrar una actividad.
-4. Pasar a seguimiento, registrar motivo y cerrar.
-5. Confirmar que se conserva el historial y no se admiten actividades adicionales.
-6. Señalar una decisión técnica y cómo se verificó.
+Estos ejemplares sirven para mostrar el recorrido sin usar información personal real.
 
 ## Limitaciones conocidas
 
-- Sin autenticación, roles, backend, sincronización entre dispositivos, control multiusuario ni cifrado de datos en reposo.
-- `localStorage` depende del navegador/origen y puede borrarse; exportación manual sin función de importación.
-- La creación inicial de expedientes no obliga a realizar el cambio a seguimiento antes de registrar actividades, tal como permite el enunciado.
-- Fecha/hora calculada por el equipo cliente, por lo que depende del reloj del dispositivo.
-- La aplicación no está preparada para uso jurídico real ni para registrar información sensible.
-- No se han ejecutado las pruebas manuales de interfaz en el equipo del participante; deben documentarse resultados reales.
+- La solución sigue siendo un prototipo cliente-side, sin autenticación ni backend.
+- Los datos dependen del navegador y del origen en que se ejecuta la aplicación.
+- La exportación JSON es respaldo manual; no existe importación.
+- La evolución del caso depende del reloj del dispositivo local.
+- La aplicación está pensada para fines académicos y no reemplaza procedimiento legal real.
+
+## Entrega y demostración
+
+La entrega final debe incluir:
+1. Código fuente funcional.
+2. README con el análisis, decisiones con IA, reglas y comprobaciones.
+3. Dos o más expedientes ficticios para demostrar las funciones.
+4. Commit final publicado en GitHub.
+
+La demostración del flujo debe mostrar la reapertura y la conservación del historial, además de explicar una decisión relevante de diseño o validación.
